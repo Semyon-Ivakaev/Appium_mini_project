@@ -31,4 +31,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    testLogging {
+        lifecycle {
+            events "failed"
+            exceptionFormat "short"
+        }
+    }
 }
