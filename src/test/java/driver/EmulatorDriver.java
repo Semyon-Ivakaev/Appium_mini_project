@@ -2,6 +2,7 @@ package driver;
 
 import com.codeborne.selenide.WebDriverProvider;
 import config.ConfigReader;
+import helper.ApkInfoHelper;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import org.openqa.selenium.WebDriver;
@@ -20,8 +21,8 @@ public class EmulatorDriver implements WebDriverProvider {
     // properties
     public static final String DEVICE_NAME = ConfigReader.emulatorConfig.deviceName();
     public static final String PLATFORM_NAME = ConfigReader.emulatorConfig.platformName();
-    public static final String APP_PACKAGE = ConfigReader.emulatorConfig.appPackage();
-    public static final String APP_ACTIVITY = ConfigReader.emulatorConfig.appActivity();
+    public static String APP_PACKAGE = ConfigReader.emulatorConfig.appPackage();
+    public static String APP_ACTIVITY = ConfigReader.emulatorConfig.appActivity();
     public static final String APP = ConfigReader.emulatorConfig.app();
     public static final String URL = ConfigReader.emulatorConfig.remoteURL();
 
@@ -39,7 +40,9 @@ public class EmulatorDriver implements WebDriverProvider {
         return file.getAbsolutePath();
     }
     private void initPackageAndActivity() {
-        // TODO: create apk helper
+        ApkInfoHelper helper = new ApkInfoHelper();
+        APP_ACTIVITY = APP_ACTIVITY.isEmpty() ? helper.getAppMainActivity() : APP_ACTIVITY;
+        APP_PACKAGE = APP_PACKAGE.isEmpty() ? helper.getAppPackageFromApk() : APP_PACKAGE;
     }
 
     @Nonnull
